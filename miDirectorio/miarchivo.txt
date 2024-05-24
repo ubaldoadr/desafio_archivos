@@ -1,0 +1,10 @@
+perro
+gato
+juan
+daniel
+juan
+gato
+perro
+camila
+daniel
+camila
