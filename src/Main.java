@@ -5,18 +5,63 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
+    static File  miArchivoATrabajar=null;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese la palabra a buscar:");
-        String textoABuscar = sc.next();
+
 
         ArrayList<String> lista = new ArrayList<String>(Arrays.asList("perro", "gato", "juan", "daniel", "juan", "gato", "perro", "camila", "daniel", "camila"));
         System.out.println(lista);
-        File miArchivoATrabajar = crearArchivo("miDirectorio", "miarchivo.txt");
-        escribirArchivo(miArchivoATrabajar,lista);
-        validarDirectorio("miDirectorio");
-        validarArchivo(miArchivoATrabajar.getAbsolutePath());
-        buscarTexto(textoABuscar, miArchivoATrabajar);
+
+        int op;
+        do {
+            op = mostrarMenu();
+
+            if (op == 1) {
+                miArchivoATrabajar = crearArchivo("miDirectorio", "miarchivo.txt");
+                escribirArchivo(miArchivoATrabajar, lista);
+            } else if (op == 2) {
+                validarDirectorio("miDirectorio");
+            } else if (op == 3) {
+                if (miArchivoATrabajar != null){
+                    validarArchivo(miArchivoATrabajar.getAbsolutePath());
+                }else {
+                    mensaje("el archivo aun no ha sido creado");
+                }
+            } else if (op == 4) {
+                if (miArchivoATrabajar != null){
+                    System.out.println("Ingrese la palabra a buscar:");
+                    String textoABuscar = sc.next();
+                    buscarTexto(textoABuscar, miArchivoATrabajar);
+                }else {
+                    mensaje("el archivo aun no ha sido creado");
+                }
+
+            } else if (op == 0) {
+                System.out.println("Adios");
+            } else {
+                System.out.println("Opción no válida");
+            }
+        } while (op != 0);
+
+    }
+    public static int leerValorInt(String mensaje) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println(mensaje);
+        return sc.nextInt();
+    }
+
+    public static int mostrarMenu(){
+        mensaje(" === MENÚ DE OPCIONES ===\n");
+        mensaje(" 1. Crear directorio y archivo\n");
+        mensaje(" 2. Validar un directorio\n");
+        mensaje(" 3. Validar un archivo\n");
+        mensaje(" 4. buscar texto\n");
+        mensaje(" 0. Salir\n");
+        return leerValorInt("\nElige una opción\n");
+    }
+    public static void mensaje(String mensaje){
+        System.out.println(mensaje);
     }
 
     public static void validarArchivo (String nombreArchivo) {
@@ -65,7 +110,8 @@ public class Main {
     }
 
     public static File crearArchivo(String miDirectorio, String archivo) {
-        File directorio = new File(miDirectorio);
+         //File directorio = new File(miDirectorio);
+       File directorio = new File("src/" + miDirectorio);
 
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
